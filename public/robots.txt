@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://annamalaiyaragriculturalmachinery.shop/sitemap.xml
+
+# Allow all crawlers to access main pages
+Allow: /machinery
+Allow: /shop
+Allow: /services
+Allow: /contact
+Allow: /about
+Allow: /quote
+
+# Allow access to images
+Allow: /images/
+
+# Disallow admin or private areas (if any)
+Disallow: /admin/
+Disallow: /private/
+
+# Crawl delay (optional, helps with server load)
+Crawl-delay: 1
