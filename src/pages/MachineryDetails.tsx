@@ -16,7 +16,9 @@ import {
   Fuel,
   Award,
   ImageIcon,
-  RefreshCw
+  RefreshCw,
+  Eye,
+  X
 } from "lucide-react";
 
 interface MachineryProduct {
@@ -47,26 +49,77 @@ interface MachineryProduct {
 const ProductImage = ({ src, alt }: { src: string; alt: string }) => {
   const [imageSrc, setImageSrc] = useState(src);
   const [imageError, setImageError] = useState(false);
+  const [imageLoading, setImageLoading] = useState(true);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   const handleImageError = () => {
     setImageError(true);
+    setImageLoading(false);
+  };
+
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
+
+  const toggleZoom = () => {
+    setIsZoomed(!isZoomed);
   };
 
   if (imageError) {
     return (
-      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
-        <ImageIcon className="h-12 w-12 text-gray-400" />
+      <div className="w-full h-full bg-gray-100 flex flex-col items-center justify-center p-8 min-h-[400px]">
+        <ImageIcon className="h-16 w-16 text-gray-400 mb-2" />
+        <p className="text-sm text-gray-500 text-center">Image not available</p>
+        <p className="text-xs text-gray-400 text-center mt-1">{alt}</p>
       </div>
     );
   }
 
   return (
-    <img
-      src={imageSrc}
-      alt={alt}
-      onError={handleImageError}
-      className="w-full h-full object-cover"
-    />
+    <>
+      <div className="relative w-full h-full cursor-pointer group" onClick={toggleZoom}>
+        {imageLoading && (
+          <div className="absolute inset-0 bg-gray-100 flex items-center justify-center min-h-[400px]">
+            <RefreshCw className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+        <img
+          src={imageSrc}
+          alt={alt}
+          onError={handleImageError}
+          onLoad={handleImageLoad}
+          className={`w-full h-full object-contain transition-all duration-300 hover:scale-105 ${
+            imageLoading ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+        {/* Zoom overlay */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-2">
+            <Eye className="h-5 w-5 text-gray-700" />
+          </div>
+        </div>
+      </div>
+      
+      {/* Full Screen Image Modal */}
+      {isZoomed && (
+        <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4" onClick={toggleZoom}>
+          <div className="relative max-w-7xl max-h-full">
+            <button 
+              onClick={toggleZoom}
+              className="absolute top-4 right-4 bg-white/20 hover:bg-white/30 rounded-full p-2 transition-colors z-10"
+            >
+              <X className="h-6 w-6 text-white" />
+            </button>
+            <img
+              src={imageSrc}
+              alt={alt}
+              className="max-w-full max-h-full object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
@@ -560,25 +613,6 @@ const MachineryDetails = () => {
     },
     {
       id: 23,
-      name: "DHARANEE ROTAVATOR",
-      brand: "DHARANEE",
-      price: "₹1,20,000",
-      image: "/images/rotavator.jpg",
-      rating: 4.5,
-      reviews: 89,
-      category: "Specialized",
-      features: ["Heavy Duty Blades", "Adjustable Depth", "Universal Mounting", "Soil Pulverization", "Easy Maintenance"],
-      description: "Robust DHARANEE rotavator for effective soil preparation. Features heavy-duty blades, adjustable working depth, and universal mounting system for various tractor models.",
-      specifications: {
-        fuelType: "Tractor Attachment",
-        weight: "380 kg",
-        suitable: "Soil Preparation & Cultivation"
-      },
-      inStock: true,
-      isPopular: true
-    },
-    {
-      id: 24,
       name: "DHARANEE STRAW BALER",
       brand: "DHARANEE",
       price: "₹3,60,000",
@@ -597,6 +631,29 @@ const MachineryDetails = () => {
       inStock: true,
       isNew: true,
       isPopular: true
+    },
+    {
+      id: 24,
+      name: "DHARANEE ROTAVATOR",
+      brand: "DHARANEE",
+      price: "₹1,20,000",
+      originalPrice: "₹1,35,000",
+      image: "/images/rotavator.jpg",
+      rating: 4.7,
+      reviews: 124,
+      category: "Specialized",
+      features: ["Heavy Duty Steel Blades", "Adjustable Working Depth", "Universal PTO Mounting", "Superior Soil Mixing", "Low Maintenance Design"],
+      description: "Professional-grade DHARANEE rotavator engineered for intensive soil preparation and cultivation. Features premium hardened steel blades with adjustable depth control (4-8 inches), universal PTO mounting compatible with all major tractor brands. Ideal for breaking hard soil, mixing crop residues, and preparing perfect seedbeds. Built with reinforced gearbox and maintenance-free sealed bearings for long-lasting performance in tough field conditions.",
+      specifications: {
+        engine: "PTO Driven (35-65 HP)",
+        fuelType: "Tractor PTO Power",
+        weight: "380 kg",
+        suitable: "Primary & Secondary Tillage"
+      },
+      discount: "11% Off",
+      inStock: true,
+      isPopular: true,
+      isNew: true
     }
   ];
 
@@ -687,7 +744,7 @@ const MachineryDetails = () => {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Product Images */}
             <div className="space-y-4">
-              <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+              <div className="bg-gray-50 rounded-lg overflow-hidden border border-gray-200 min-h-[400px] lg:min-h-[500px]">
                 <ProductImage 
                   src={machinery.image} 
                   alt={machinery.name}

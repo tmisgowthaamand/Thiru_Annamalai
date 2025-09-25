@@ -4,7 +4,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { Star, Heart, MessageSquare, Tractor, Scissors, Droplets, Wrench, Award, IndianRupee, Settings, Eye, X, Fuel, ArrowLeft } from "lucide-react";
+import { Star, Heart, MessageSquare, Tractor, Scissors, Droplets, Wrench, Award, IndianRupee, Settings, Eye, X, Fuel, ArrowLeft, Package } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
@@ -140,23 +140,36 @@ const Machinery = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [selectedBrand, setSelectedBrand] = useState<string>("All");
 
-  // Handle URL parameters for category filtering
+  // Handle URL parameters for category and brand filtering
   useEffect(() => {
     const categoryParam = searchParams.get('category');
+    const brandParam = searchParams.get('brand');
     if (categoryParam) {
       setSelectedCategory(categoryParam);
+    }
+    if (brandParam) {
+      setSelectedBrand(brandParam);
     }
   }, [searchParams]);
 
   // Update URL when category changes
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    if (category === "All") {
-      setSearchParams({});
-    } else {
-      setSearchParams({ category });
-    }
+    const newParams: any = {};
+    if (category !== "All") newParams.category = category;
+    if (selectedBrand !== "All") newParams.brand = selectedBrand;
+    setSearchParams(newParams);
+  };
+
+  // Update URL when brand changes
+  const handleBrandChange = (brand: string) => {
+    setSelectedBrand(brand);
+    const newParams: any = {};
+    if (selectedCategory !== "All") newParams.category = selectedCategory;
+    if (brand !== "All") newParams.brand = brand;
+    setSearchParams(newParams);
   };
   
   const machineryProducts: MachineryProduct[] = [
@@ -499,25 +512,6 @@ const Machinery = () => {
 
     // Specialized Equipment
     {
-      id: 16,
-      name: "Mahindra Straw Reaper",
-      brand: "Mahindra",
-      price: "₹2,85,000",
-      image: "/images/Dharanee straw.jpg",
-      rating: 4.5,
-      reviews: 67,
-      category: "Specialized",
-      features: ["Self Propelled", "Efficient Cutting", "Straw Collection", "Fuel Efficient"],
-      description: "Efficient straw reaper for post-harvest operations. Self-propelled design with efficient cutting mechanism and straw collection system.",
-      specifications: {
-        engine: "12 HP Diesel",
-        fuelType: "Diesel",
-        weight: "450 kg",
-        suitable: "Straw & Stubble Management"
-      },
-      inStock: true
-    },
-    {
       id: 17,
       name: "Rotary Tiller Attachment",
       brand: "Universal",
@@ -642,25 +636,6 @@ const Machinery = () => {
     },
     {
       id: 23,
-      name: "DHARANEE ROTAVATOR",
-      brand: "DHARANEE",
-      price: "₹1,20,000",
-      image: "/images/rotavator.jpg",
-      rating: 4.5,
-      reviews: 89,
-      category: "Specialized",
-      features: ["Heavy Duty Blades", "Adjustable Depth", "Universal Mounting", "Soil Pulverization", "Easy Maintenance"],
-      description: "Robust DHARANEE rotavator for effective soil preparation. Features heavy-duty blades, adjustable working depth, and universal mounting system for various tractor models.",
-      specifications: {
-        fuelType: "Tractor Attachment",
-        weight: "380 kg",
-        suitable: "Soil Preparation & Cultivation"
-      },
-      inStock: true,
-      isPopular: true
-    },
-    {
-      id: 24,
       name: "DHARANEE STRAW BALER",
       brand: "DHARANEE",
       price: "₹3,60,000",
@@ -679,7 +654,30 @@ const Machinery = () => {
       inStock: true,
       isNew: true,
       isPopular: true
-    }
+    },
+    {
+      id: 24,
+      name: "DHARANEE ROTAVATOR",
+      brand: "DHARANEE",
+      price: "₹1,20,000",
+      originalPrice: "₹1,35,000",
+      image: "/images/rotavator.jpg",
+      rating: 4.7,
+      reviews: 124,
+      category: "Specialized",
+      features: ["Heavy Duty Steel Blades", "Adjustable Working Depth", "Universal PTO Mounting", "Superior Soil Mixing", "Low Maintenance Design"],
+      description: "Professional-grade DHARANEE rotavator engineered for intensive soil preparation and cultivation. Features premium hardened steel blades with adjustable depth control (4-8 inches), universal PTO mounting compatible with all major tractor brands. Ideal for breaking hard soil, mixing crop residues, and preparing perfect seedbeds. Built with reinforced gearbox and maintenance-free sealed bearings for long-lasting performance in tough field conditions.",
+      specifications: {
+        engine: "PTO Driven (35-65 HP)",
+        fuelType: "Tractor PTO Power",
+        weight: "380 kg",
+        suitable: "Primary & Secondary Tillage"
+      },
+      discount: "11% Off",
+      inStock: true,
+      isPopular: true,
+      isNew: true
+    },
   ];
 
   const categories = [
@@ -687,7 +685,7 @@ const Machinery = () => {
     { name: "Power Tillers", icon: Wrench, count: 6, color: "text-secondary" },
     { name: "Harvesters", icon: Scissors, count: 4, color: "text-accent" },
     { name: "Sprayers", icon: Droplets, count: 2, color: "text-cta" },
-    { name: "Specialized", icon: Settings, count: 8, color: "text-green-600" }
+    { name: "Specialized", icon: Settings, count: 6, color: "text-green-600" }
   ];
 
   return (
@@ -712,7 +710,7 @@ const Machinery = () => {
           <div className="text-center mb-16">
             <h1 className="heading-primary mb-6">Agricultural Machinery</h1>
             <p className="body-text max-w-3xl mx-auto mb-8">
-              Explore our comprehensive range of tractors, power tillers, harvesters, and sprayers. 
+              Explore our comprehensive range of tractors, power tillers, harvesters, and sprayers from leading brands including KAIRA and DHARANEE. 
               All machinery comes with warranty, genuine spare parts, and reliable after-sales support across Tamil Nadu.
             </p>
             
@@ -743,16 +741,90 @@ const Machinery = () => {
               ))}
             </div>
 
+            {/* Brand Filters */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              <Button
+                variant={selectedBrand === "All" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("All")}
+                className="transition-all duration-300"
+              >
+                All Brands
+              </Button>
+              <Button
+                variant={selectedBrand === "KAIRA" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("KAIRA")}
+                className="transition-all duration-300"
+              >
+                KAIRA
+              </Button>
+              <Button
+                variant={selectedBrand === "DHARANEE" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("DHARANEE")}
+                className="transition-all duration-300"
+              >
+                DHARANEE
+              </Button>
+              <Button
+                variant={selectedBrand === "Mahindra" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("Mahindra")}
+                className="transition-all duration-300"
+              >
+                Mahindra
+              </Button>
+              <Button
+                variant={selectedBrand === "New Holland" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("New Holland")}
+                className="transition-all duration-300"
+              >
+                New Holland
+              </Button>
+              <Button
+                variant={selectedBrand === "John Deere" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("John Deere")}
+                className="transition-all duration-300"
+              >
+                John Deere
+              </Button>
+              <Button
+                variant={selectedBrand === "Deutz Fahr" ? "default" : "outline"}
+                size="sm"
+                onClick={() => handleBrandChange("Deutz Fahr")}
+                className="transition-all duration-300"
+              >
+                Deutz Fahr
+              </Button>
+            </div>
+
             {/* Selected Category Display */}
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold text-foreground mb-2">
                 {selectedCategory === "All" ? "All Agricultural Machinery" : selectedCategory}
               </h2>
               <p className="text-muted-foreground">
-                {selectedCategory === "All" 
-                  ? `Showing all ${machineryProducts.length} products` 
-                  : `Showing ${machineryProducts.filter(p => p.category === selectedCategory).length} ${selectedCategory.toLowerCase()}`
-                }
+                {(() => {
+                  const filteredProducts = machineryProducts.filter(product => {
+                    const categoryMatch = selectedCategory === "All" || product.category === selectedCategory;
+                    const brandMatch = selectedBrand === "All" || product.brand === selectedBrand;
+                    return categoryMatch && brandMatch;
+                  });
+                  
+                  let displayText = `Showing ${filteredProducts.length} products`;
+                  if (selectedCategory !== "All" && selectedBrand !== "All") {
+                    displayText += ` in ${selectedCategory.toLowerCase()} from ${selectedBrand}`;
+                  } else if (selectedCategory !== "All") {
+                    displayText += ` in ${selectedCategory.toLowerCase()}`;
+                  } else if (selectedBrand !== "All") {
+                    displayText += ` from ${selectedBrand}`;
+                  }
+                  
+                  return displayText;
+                })()}
               </p>
             </div>
           </div>
@@ -760,7 +832,11 @@ const Machinery = () => {
           {/* Filtered Products Grid */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {machineryProducts
-              .filter(product => selectedCategory === "All" || product.category === selectedCategory)
+              .filter(product => {
+                const categoryMatch = selectedCategory === "All" || product.category === selectedCategory;
+                const brandMatch = selectedBrand === "All" || product.brand === selectedBrand;
+                return categoryMatch && brandMatch;
+              })
               .map((product) => (
                 <ProductCard key={product.id} product={product} navigate={navigate} />
               ))
@@ -768,15 +844,24 @@ const Machinery = () => {
           </div>
 
           {/* No Products Message */}
-          {machineryProducts.filter(product => selectedCategory === "All" || product.category === selectedCategory).length === 0 && (
+          {machineryProducts.filter(product => {
+            const categoryMatch = selectedCategory === "All" || product.category === selectedCategory;
+            const brandMatch = selectedBrand === "All" || product.brand === selectedBrand;
+            return categoryMatch && brandMatch;
+          }).length === 0 && (
             <div className="text-center py-16">
               <h3 className="text-xl font-semibold mb-2">No products found</h3>
               <p className="text-muted-foreground mb-4">
-                No products available in the selected category.
+                No products available with the selected filters.
               </p>
-              <Button onClick={() => handleCategoryChange("All")}>
-                View All Products
-              </Button>
+              <div className="flex gap-4 justify-center">
+                <Button onClick={() => handleCategoryChange("All")}>
+                  Clear Category Filter
+                </Button>
+                <Button onClick={() => handleBrandChange("All")} variant="outline">
+                  Clear Brand Filter
+                </Button>
+              </div>
             </div>
           )}
 
