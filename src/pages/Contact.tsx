@@ -101,9 +101,7 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold mb-1">Phone Numbers</h3>
                       <p className="text-muted-foreground">
-                        Main: <a href="tel:+919894377407" className="text-primary hover:underline">+91 98943 77407</a><br />
-                        Parts: <a href="tel:+919894377407" className="text-primary hover:underline">+91 98943 77407</a><br />
-                        Service: <a href="tel:+919894377407" className="text-primary hover:underline">+91 98943 77407</a>
+                        <a href="tel:+919894377407" className="text-primary hover:underline">+91 98943 77407</a>
                       </p>
                     </div>
                   </div>
@@ -112,8 +110,8 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold mb-1">Email</h3>
                       <p className="text-muted-foreground">
-                        General: <a href="mailto:contact@annamalaiyaragriculturalmachinery.shop" className="text-primary hover:underline">contact@annamalaiyaragriculturalmachinery.shop</a><br />
-                        Parts: <a href="mailto:contact@annamalaiyaragriculturalmachinery.shop" className="text-primary hover:underline">contact@annamalaiyaragriculturalmachinery.shop</a>
+                        <a href="mailto:contact@annamalaiyaragriculturalmachinery.shop" className="text-primary hover:underline">contact@annamalaiyaragriculturalmachinery.shop</a><br />
+                        <a href="mailto:thiruannamalaiyar014@gmail.com" className="text-primary hover:underline">thiruannamalaiyar014@gmail.com</a>
                       </p>
                     </div>
                   </div>

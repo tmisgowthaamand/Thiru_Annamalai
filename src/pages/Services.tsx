@@ -202,7 +202,7 @@ const Services = () => {
           {/* Why Choose Us */}
           <div className="bg-muted/30 rounded-2xl p-8 mb-20">
             <div className="text-center mb-12">
-              <h2 className="heading-secondary mb-4">Why Choose Thiru Krishi Connect?</h2>
+              <h2 className="heading-secondary mb-4">Why Choose Thiru Annamalaiyar?</h2>
               <p className="body-text max-w-2xl mx-auto">
                 Your trusted partner for all agricultural machinery needs in Tamil Nadu
               </p>

@@ -62,11 +62,19 @@ const Footer = () => {
                   +91 98943 77407
                 </a>
               </div>
-              <div className="flex items-center space-x-2 text-sm">
-                <Mail className="w-4 h-4 text-accent" />
-                <a href="mailto:contact@annamalaiyaragriculturalmachinery.shop" className="hover:text-accent transition-colors">
-                  contact@annamalaiyaragriculturalmachinery.shop
-                </a>
+              <div className="flex flex-col space-y-2 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4 text-accent flex-shrink-0" />
+                  <a href="mailto:contact@annamalaiyaragriculturalmachinery.shop" className="hover:text-accent transition-colors">
+                    contact@annamalaiyaragriculturalmachinery.shop
+                  </a>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4 text-accent flex-shrink-0" />
+                  <a href="mailto:thiruannamalaiyar014@gmail.com" className="hover:text-accent transition-colors">
+                    thiruannamalaiyar014@gmail.com
+                  </a>
+                </div>
               </div>
               <div className="flex items-center space-x-2 text-sm">
                 <Clock className="w-4 h-4 text-accent" />
@@ -175,7 +183,7 @@ const Footer = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-secondary-foreground/80">
             <div>
-              © 2024 Thiru Annamalaiyar Agricultural Machinery. All rights reserved.
+              © 2025 Thiru Annamalaiyar Agricultural Machinery. All rights reserved.
             </div>
             <div className="flex space-x-4 mt-2 md:mt-0">
               <Link to="/privacy" className="hover:text-accent transition-colors">Privacy Policy</Link>
